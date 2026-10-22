@@ -37,11 +37,31 @@
 4. USB 端口映射沿用 CF-XZ6 的 `UTBMap.kext`，**未针对 CF-SZ6 定制**；恢复环境认不到 U 盘时先禁用该 kext。
 5. Intel 无线网卡只能走 itlwm + HeliPort，**没有 AirDrop / 隔空投送**。
 
-## 参考仓库
+## 参考仓库（已锁版本）
 
-- [tpc-pascal/OpenCore-PANA-CFXZ6-Monterey](https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey) — 主用 EFI
-- [waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI](https://github.com/waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI) — 前代机型，ACPI/EC/睡眠参考
-- `stdrice/dell-latitude-7290-kabylake-opencore-efi` — 同平台 kext 与音频 layout 参考
+复现时请 checkout 到下列 commit，避免上游后续改动导致配置对不上：
+
+| 仓库 | 用途 | 锁定 commit | 上游最后更新 |
+|---|---|---|---|
+| [tpc-pascal/OpenCore-PANA-CFXZ6-Monterey](https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey) | **主用 EFI**（i5-7300U + HD620 + AC8265） | [`096e81a`](https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey/tree/096e81a01ab128b4792bca34759a7358671c5fee) | 2026-04-28 |
+| [waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI](https://github.com/waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI) | 前代机型，ACPI/EC/睡眠参考 | [`7820c4a`](https://github.com/waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI/tree/7820c4a01bdd86d8b3ac0a5cdae0838c14204a8a) | 2021-11-24 |
+| `stdrice/dell-latitude-7290-kabylake-opencore-efi`（Codeberg） | 同平台 kext 与音频 layout 参考 | —（未锁） | — |
+
+```bash
+# 复现时拉到锁定版本
+git clone https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey.git
+git -C OpenCore-PANA-CFXZ6-Monterey checkout 096e81a
+```
+
+> **本项目不是 fork。** 这里只记录 CF-SZ6 的适配过程与差异，不复制上游 EFI 二进制；
+> 上游是 MIT 协议，按协议保留署名即可，无需 fork 派生（fork 还会让仓库永久公开、无法转为 private）。
+
+## 上游反馈
+
+- 已向上游提交 PR，补充「EFI 缺 PS/2 键盘驱动」的说明：
+  [tpc-pascal/OpenCore-PANA-CFXZ6-Monterey#1](https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey/pull/1)
+  - 新增 `KEYBOARD-FIX.md`（现象 / 根因 / 5 条 kext 配置表 / 为何只启用两个插件）
+  - 在上游 README 的 Issues 区加了一行指向该说明
 
 ## 免责声明
 
