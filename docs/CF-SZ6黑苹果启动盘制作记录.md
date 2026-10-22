@@ -164,7 +164,50 @@ EFI 参考的 CF-XZ6 仓库只带了 I2C 触摸板驱动（VoodooI2C / VoodooI2C
 
 ---
 
-## 九、遗留问题
+## 九、发布与上游反馈（2026.10.22）
+
+### 9.1 公开仓库
+
+- 地址：<https://github.com/gaoqiaominfu/cf-sz6-hackintosh>（public，MIT）
+- 内容：`README.md` + `docs/CF-SZ6黑苹果启动盘制作记录.md` + `LICENSE`，约 12KB
+- 脱敏：目标机内网 IP、主机账号、制作机绝对路径全部隐去；不含任何 EFI 二进制与安装镜像
+
+### 9.2 版本锁定
+
+| 仓库 | 锁定 commit | 上游最后更新 |
+|---|---|---|
+| `tpc-pascal/OpenCore-PANA-CFXZ6-Monterey` | `096e81a` | 2026-04-28 |
+| `waldoxhm/Panasonic_CF-SZ5_SZ5PDYVS_hackintosh_EFI` | `7820c4a` | 2021-11-24 |
+
+锁定原因：上游为个人 EFI 备份仓（1 star / 0 issue），随时可能改动或删除；复现时必须 checkout 到上述
+commit，否则 config 对不上。
+
+### 9.3 上游 PR
+
+- <https://github.com/tpc-pascal/OpenCore-PANA-CFXZ6-Monterey/pull/1>
+- 标题：`docs: add PS/2 keyboard fix for CF-SZ6 / Let'snote`
+- 变更：新增 `KEYBOARD-FIX.md`（现象 / 根因 / 5 条 `Kernel/Add` 配置表 / 为何只启用两个插件），
+  上游 README 的 Issues 区加一行指向链接，共 `+83 / -0`
+- 动机：上游 README 自己列了「Keyboard & Touchpad 不稳定」，而该 EFI 根本没有 PS/2 驱动
+
+### 9.4 过程中的网络坑
+
+- **GitHub SSH 被 DPI 阻断**：`github.com:22`、`ssh.github.com:443`、多个官方 IP 均为
+  TCP 可连但服务端 banner 不到（`Connection timed out during banner exchange`）。
+- HTTPS 正常：`git ls-remote` 秒回，网页下载 341KB/s，212K 的仓库 push 数秒完成。
+- 结论：该网络下推 GitHub 一律走 HTTPS + PAT；SSH key 已生成但暂不可用。
+- 偶发：首次 push 静默失败（远端未更新、本地 exit 0），重试即成功，推完需用 `git ls-remote` 复核。
+
+### 9.5 为什么没有 fork 主仓库
+
+- 文档仓不是上游代码的派生，MIT 只需保留署名，无需 fork；
+- **fork 不能转为 private**（GitHub 硬限制），会焊死可见性选项；
+- fork 会带进 60MB EFI 历史，clone 体验差、搜索权重也低。
+- 仅在提 PR 时 fork 了一份（`gaoqiaominfu/OpenCore-PANA-CFXZ6-Monterey`），属必要开销。
+
+---
+
+## 十、遗留问题
 
 - **USB 端口映射**仍为 CF-XZ6 版本，未针对 CF-SZ6 重新定制。
 - **触摸板**走 I2C，尚未验证多点触控与手势是否完整。
