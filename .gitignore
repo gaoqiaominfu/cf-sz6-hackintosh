@@ -1,0 +1,10 @@
+*.pkg
+*.dmg
+*.chunklist
+*.zip
+*.iso
+*.img
+.DS_Store
+Thumbs.db
+*.bak
+*.bak-*
